@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: inforcedb
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Ars2004@
+      POSTGRES_PASSWORD: <your_pass>
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -20,7 +20,7 @@ services:
     environment:
       - POSTGRES_DB=inforcedb
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Ars2004@
+      - POSTGRES_PASSWORD=<your_pass>
       - POSTGRES_HOST=localhost
       - POSTGRES_PORT=5432
 
