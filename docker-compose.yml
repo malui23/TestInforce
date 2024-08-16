@@ -1,0 +1,28 @@
+version: '4.32'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: inforcedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ars2004@
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    command: python etl.py
+    volumes:
+      - .:/app
+    environment:
+      - POSTGRES_DB=inforcedb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Ars2004@
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+
+volumes:
+  postgres_data:
