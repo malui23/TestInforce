@@ -26,7 +26,7 @@ ETL Project with PostgreSQL
     Port: 5432
     Database: inforcedb
     User: postgres
-    Password: Ars2004@
+    Password: <your_pass>
 
 
 Деталі Python ETL-програми
@@ -35,20 +35,32 @@ Python скрипт etl.py виконує такі основні функції
     - Перетворює дані (опціонально) та вставляє їх у базу даних PostgreSQL.
     - Усі параметри підключення до бази даних зчитуються з середовища (environment variables).
 Деталі SQL-запитів
+    - Отримати кількість користувачів які увійшли в кожен конкретний день:
+        SELECT Date, COUNT(*)
+        FROM sample_data
+        GROUP BY Date;
     - Отримати всі унікальні домени електронної пошти:
-        SELECT DISTINCT SUBSTRING(email FROM '@.*$') AS domain FROM sample_data;
+        SELECT DISTINCT Domain
+        FROM sample_data;
     - Отримати користувачів, зареєстрованих за останні 7 днів:
-        SELECT * FROM sample_data WHERE registration_date >= NOW() - INTERVAL '7 days';
+        SELECT *
+        FROM sample_data
+        WHERE Date >= NOW() - INTERVAL '7 days';
     - Знайти користувачів із найпоширенішим доменом електронної пошти:
         WITH topDomain AS (
-            SELECT SUBSTRING(email FROM '@.*$') AS domain, COUNT(*) AS dc
+            SELECT Domain AS top,
+                    COUNT(*) as dc
             FROM sample_data
-            GROUP BY domain
-            ORDER BY dc DESC
+            GROUP BY Domain
+            ORDER BY dc desc
             LIMIT 1
         )
-        SELECT * FROM sample_data
-        WHERE SUBSTRING(email FROM '@.*$') = (SELECT domain FROM topDomain);
+        SELECT *
+        FROM sample_data
+        WHERE Domain = (SELECT top FROM topDomain);
+    - Видалення записів з некоректним доменом електронної пошти:
+        DELETE FROM sample_data
+        WHERE Domain NOT IN ('@gmail.com', '@icloud.com', '@yahoo.com');
 
 Структура проєкту
 .
